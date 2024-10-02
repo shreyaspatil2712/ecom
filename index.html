@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./output.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-kumbh">
+<div class="w-full md:w-4/5 mx-auto">
+    <nav class="flex items-center justify-between px-8 py-5 border-b border-gray-300">
+         
+        <div class="flex items-center space-x-4">
+            <!-- Hamburger Menu (Visible on Mobile Only) -->
+            <button id="menu-toggle" class="sm:hidden focus:outline-none">
+                <!-- Hamburger Icon -->
+                <img src="images\icon-menu.svg" alt="menu">
+            </button>
+            <!-- Left-aligned logo -->
+            <img src="images\logo.svg" alt="logo">
+        </div>
+        <!-- Desktop Menu Items (Hidden on Mobile) -->
+        <ul class="hidden sm:flex space-x-8 text-gray-500">
+            <li class="hover:text-gray-800 cursor-pointer">Collections</li>
+            <li class="hover:text-gray-800 cursor-pointer">Men</li>
+            <li class="hover:text-gray-800 cursor-pointer">Women</li>
+            <li class="hover:text-gray-800 cursor-pointer">About</li>
+            <li class="hover:text-gray-800 cursor-pointer">Contact</li>
+        </ul>
+    
+        <!-- Cart and Profile (Visible on all screens) -->
+        <div class="flex items-center space-x-4">
+            <div class="relative cursor-pointer" onclick="toggleCart()">
+                <img src="images\icon-cart.svg" alt="Cart Icon" class="w-8 h-8">
+                <!-- Items count on the cart icon -->
+                <div id="cartCount" class="absolute -top-2 -right-2 bg-orange-500 text-white text-sm w-6 h-6 rounded-full flex items-center justify-center hidden">0</div>
+            </div>
+            <img src="images\image-avatar.png" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-gray-300 object-cover cursor-pointer">
+        </div>
+    
+       
+    </nav>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobile-menu" class="z-50 fixed inset-y-0 left-0 bg-white shadow-lg w-64 transform -translate-x-full transition-transform duration-300 ease-in-out sm:hidden">
+        <button id="menu-close" class="m-4 text-gray-500 focus:outline-none">
+            <!-- Close Icon -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <!-- Mobile Menu Items -->
+        <ul class="flex flex-col space-y-4 text-gray-800 p-8">
+            <li class="hover:text-gray-600 cursor-pointer">Collections</li>
+            <li class="hover:text-gray-600 cursor-pointer">Men</li>
+            <li class="hover:text-gray-600 cursor-pointer">Women</li>
+            <li class="hover:text-gray-600 cursor-pointer">About</li>
+            <li class="hover:text-gray-600 cursor-pointer">Contact</li>
+        </ul>
+    </div>
+
+ 
+    
+    <div class="sm:flex sm:p-[6vw] gap-[8vw] space-y-4">
+       
+        <div class="sm:w-1/2 w-full h-auto">
+            <!-- Main Image Display -->
+            <div class="relative h-64 overflow-hidden w-full h-auto sm:z-0 z-10">
+                <img id="mainImage" src="images/image-product-1.jpg" class="object-cover sm:rounded-xl rounded-none" alt="Shoe Image" onclick="openLightbox(this.src)">
+                
+                <!-- Navigation buttons (only shown on small screens) -->
+                <button id="prevButtonMobile" class="sm:hidden absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md" onclick="prevImage()">❮</button>
+                <button id="nextButtonMobile" class="sm:hidden absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md" onclick="nextImage()">❯</button>
+            </div>
+        
+            <!-- Thumbnail Images (hidden in mobile view) -->
+            <div class="sm:flex hidden mt-4 justify-center space-x-[2%] w-full">
+                <img src="images/image-product-1-thumbnail.jpg" class="w-[23.5%] h-auto object-cover cursor-pointer rounded-xl border-2 border-orange-500 backdrop-blur-sm bg-white/30 transition-all duration-300" onclick="changeImage(`images\\image-product-1.jpg`,this)" alt="Thumbnail 1">
+                <img src="images/image-product-2-thumbnail.jpg" class="w-[23.5%] h-auto object-cover cursor-pointer rounded-xl border-2 border-transparent hover:border-gray-300 transition-all duration-300" onclick="changeImage('images\\image-product-2.jpg',this)" alt="Thumbnail 2">
+                <img src="images/image-product-3-thumbnail.jpg" class="w-[23.5%] h-auto object-cover cursor-pointer rounded-xl border-2 border-transparent hover:border-gray-300 transition-all duration-300" onclick="changeImage('images\\image-product-3.jpg',this)" alt="Thumbnail 3">
+                <img src="images/image-product-4-thumbnail.jpg" class="w-[23.5%] h-auto object-cover cursor-pointer rounded-xl border-2 border-transparent hover:border-gray-300 transition-all duration-300" onclick="changeImage('images\\image-product-4.jpg',this)" alt="Thumbnail 4">
+            </div>
+        </div>
+        
+     
+      <!-- Lightbox -->
+      <div id="lightboxModal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center">
+        <div class="relative h-auto sm:w-1/3 w-2/3">
+            <img id="lightboxImage" class="rounded-xl" src="" alt="Lightbox Image">
+            <button id="prevButton" class="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full">❮</button>
+            <button id="nextButton" class="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-white rounded-full">❯</button>
+            <button id="closeLightbox" class="absolute top-0 right-0 m-4 p-2 bg-white rounded-full">✖</button>
+        </div>
+    </div>
+
+        <div id="right-container" class="sm:w-1/2 w-full h-auto space-y-4 items-center justify-center p-[6vw] sm:p-0">
+            <p class="font-bold text-sm text-darkGrayishBlue">SNEAKER COMPANY</p>
+            <h1 class="font-bold text-4xl">Fall Limited Edition Sneakers</h1>
+            <p class="text-base text-darkGrayishBlue">These low-profile sneaker are your perfect casual wear companion.
+                Featuring a durable rubber outer sole, they'll withstand everything the weather can offer.
+            </p>
+            <div class="flex sm:grid justify-between">
+                <p class="font-bold text-xl">$125.00 50%</p>
+                <p class="text-base font-bold text-darkGrayishBlue line-through">$250.00</p>
+            </div>
+            <div class="sm:flex items-center sm:space-x-4 space-y-4 sm:space-y-0 p-2">
+                <!-- Quantity Selector -->
+                <div class="flex items-center bg-lightGrayishBlue rounded-md sm:w-1/3  justify-between">
+                    <!-- Minus Button -->
+                    <button id="minusBtn" class="p-2 bg-transparent hover:bg-gray-200 rounded-l-md">
+                        <img src="images\icon-minus.svg" alt="Minus Icon" class="w-3 h-1">
+                    </button>  
+                    
+                    <!-- Quantity Display -->
+                    <span  id="quantity" class="px-4 text-lg font-bold text-black">0</span>
+                    
+                    <!-- Plus Button -->
+                    <button  id="plusBtn" class="p-2 bg-transparent hover:bg-gray-200 rounded-r-md">
+                        <img src="images\icon-plus.svg" alt="Plus Icon" class="w-3 h-3">
+                    </button>
+                </div>
+            
+                <!-- Add to Cart Button -->
+                <button id="addToCartBtn" class=" flex sm: items-center px-6 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition duration-300 sm:w-2/3 w-full justify-center">
+                    <img src="images\icon-cart.svg" alt="Cart Icon" class=" h-5 mr-2 ">
+                    <spa class="text-black font-bold">Add to cart</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Window -->
+    <div id="cartWindow" class="hidden absolute top-24 sm:top-16 right-6 bg-white shadow-lg rounded-lg p-4 w-[90vw] sm:w-72">
+        <h2 class="text-lg font-semibold mb-4">Cart</h2>
+        <div id="cartItems">
+            <!-- Items will be added here dynamically -->
+        </div>
+        <p id="emptyCartMessage" class="text-gray-500 font-bold p-14">Your cart is empty.</p>
+        <div id="cartDetails" class="mt-4 hidden">
+            <p class="font-semibold text-gray-700">Total: $<span id="totalPrice">0.00</span></p>
+            <button class="mt-4 w-full bg-orange-500 text-black font-bold py-2 rounded-md hover:bg-orange-600">Checkout</button>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
